@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waving Bar</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.2/web-animations-next-lite.min.js"></script>
+    <style>
+      .bar-container,
+      .bar-container2,
+      .bar-container3 {
+        display: flex;
+        align-items: flex-end;
+      }
+      .bar {
+        width: 10px;
+        height: 200px;
+        margin: 0 10px;
+        background-color: lightgray;
+        transform-origin: bottom;
+        will-change: transform;
+      }
+      .bar:nth-child(5n + 1) {
+        background-color: crimson;
+      }
+      .bar:nth-child(5n + 2) {
+        background-color: gold;
+      }
+      .bar:nth-child(5n + 3) {
+        background-color: forestgreen;
+      }
+      .bar:nth-child(5n + 4) {
+        background-color: dodgerblue;
+      }
+      .bar:nth-child(5n + 5) {
+        background-color: darkorchid;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar-container"></div>
+    <div class="bar-container2"></div>
+    <div class="bar-container3"></div>
+    <script>
+      const barContainer = document.querySelector(".bar-container");
+      const bars = [];
+      let bar;
+      for (let i = 0; i < 30; i++) {
+        bar = document.createElement("div");
+        bar.classList.add("bar");
+        barContainer.append(bar);
+        bars.push(bar);
+      }
+      const keyframes = [
+        { transform: "scaleY(0)" },
+        { transform: "scaleY(1)" },
+      ];
+      const options = {
+        duration: 3000,
+        iterations: Infinity,
+        direction: "alternate",
+        fill: "both",
+        easing: "ease-in-out",
+      };
+      bars.forEach((bar, index) => {
+        bar.animate(keyframes, { ...options, delay: index * 200 });
+      });
+
+      const barContainer2 = document.querySelector(".bar-container2");
+      const bars2 = [];
+      for (let i = 0; i < 30; i++) {
+        bar = document.createElement("div");
+        bar.classList.add("bar");
+        barContainer2.append(bar);
+        bars2.push(bar);
+      }
+      const effects = [];
+      bars2.forEach((bar, index) => {
+        const newOptions = { ...options, delay: index * 200 };
+        const effect = new KeyframeEffect(bar, keyframes, newOptions);
+        effects.push(effect);
+      });
+      const groupEffect = new GroupEffect(effects);
+      const animation = document.timeline.play(groupEffect);
+
+      const options3 = {
+        duration: 500,
+        // iterations: Infinity,
+        direction: "alternate",
+        fill: "both",
+        easing: "ease-in-out",
+      };
+
+      const barContainer3 = document.querySelector(".bar-container3");
+      const bars3 = [];
+      for (let i = 0; i < 30; i++) {
+        bar = document.createElement("div");
+        bar.classList.add("bar");
+        barContainer3.append(bar);
+        bars3.push(bar);
+      }
+      const effects3 = [];
+      bars3.forEach((bar, index) => {
+        const effect = new KeyframeEffect(bar, keyframes, options3);
+        effects3.push(effect);
+      });
+      const sequenceEffect = new SequenceEffect(effects3);
+      const animation3 = document.timeline.play(sequenceEffect);
+    </script>
+  </body>
+</html>
